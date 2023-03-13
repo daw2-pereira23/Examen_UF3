@@ -5173,24 +5173,22 @@ const tablaPedidos = {
         </table>
     `,
   script: () => {
-    document.querySelector("#enviar").addEventListener("click", () => {
-      var cantidad = document.querySelector("#cantidad").value;
-      var seleccion = document.querySelector("#eligeCerbeza");
-      var opcion = seleccion.options[seleccion.selectedIndex].value;
-      var cantidad = document.querySelector("#cantidad").value;
-      opcion = opcion - 1;
-      var nombre = cervezas[opcion].nombre;
-      const tr = document.createElement("tr");
-      tr.setAttribute("id", cervezas[opcion].id);
-      const th = `
+    var cantidad = document.querySelector("#cantidad").value;
+    var seleccion = document.querySelector("#eligeCerbeza");
+    var opcion = seleccion.options[seleccion.selectedIndex].value;
+    var cantidad = document.querySelector("#cantidad").value;
+    opcion = opcion - 1;
+    var nombre = cervezas[opcion].nombre;
+    const tr = document.createElement("tr");
+    tr.setAttribute("id", cervezas[opcion].id);
+    const th = `
                 <th>${nombre}</th>
                 <th>${cantidad}<th>
                 <th><button class="btn btn-danger borrar" data-id="${cervezas[opcion].id}">Eliminar</button></th>
                 <th><button class="btn btn-warning editar" data-id="${cervezas[opcion].id}" data-nombre="${nombre}" data-cantidad="${cantidad} ">Editar</button></th>
             `;
-      tr.innerHTML = th;
-      document.querySelector("tbody").append(tr);
-    });
+    tr.innerHTML = th;
+    document.querySelector("tbody").append(tr);
   },
   detectarEventos: () => {
     document.querySelector("tbody").addEventListener("click", (event) => {
@@ -5205,11 +5203,11 @@ const tablaPedidos = {
             <form class="mt-5" id="formulario" novalidate>
                <div class="mt-2">
                   <label class="form-label">Nombre del grupo</label>
-                  <input type="text" class="form-control" id="nombre-grupo" required pattern="{4,10}">
+                  <input type="text" class="form-control" id="nombre-grupo" min=4 max=10">
                </div>
                <div class="mt-2">
                   <label class="form-label">Mesa</label>
-                  <input type="number" class="form-control" required pattern = {1,15}>
+                  <input type="number" class="form-control" min="1" max="15">
                </div>
                <div class="mt-2">
                   <label class="form-label">Elige tu birra</label>
@@ -5252,7 +5250,6 @@ const tablaPedidos = {
           document.querySelector("#pedidos").innerHTML = pedidos.template;
           pedidos.script();
           pedidos.inyectarCerveza();
-          tablaPedidos.script();
           tablaPedidos.detectarEventos();
         });
       }
@@ -5291,11 +5288,11 @@ const pedidos = {
             <form class="mt-5" id="formulario">
                <div class="mt-2">
                   <label class="form-label">Nombre del grupo</label>
-                  <input type="text" class="form-control" id="nombre-grupo"  required pattern="{4,10}">
+                  <input type="text" class="form-control" id="nombre-grupo"  minlength="4" maxlength="10" required >
                </div>
                <div class="mt-2">
                   <label class="form-label">Mesa</label>
-                  <input type="number" class="form-control" required pattern="{1,15}>
+                  <input type="number" class="form-control" min="2" max="15" required>
                </div>
                <div class="mt-2">
                   <label class="form-label">Elige tu birra</label>
@@ -5305,7 +5302,7 @@ const pedidos = {
                </div>
                <div class="mt-2">
                   <label class="form-label">Cuantas te traigo</label>
-                  <input type="number" class="form-control" id="cantidad" required min="1">
+                  <input type="number" class="form-control" id="cantidad" min="1" required >
                </div>
             </form>
             <button class="btn btn-success col-12 mt-3" id="enviar">Enviar Pedido</button>
@@ -5357,10 +5354,9 @@ const pedidos = {
     document.querySelector("#enviar").addEventListener("click", () => {
       document.querySelector("#formulario").classList.add("was-validated");
       const nick = document.getElementById("nombre-grupo");
-      if (!nick.checkValidity()) {
-        tablaPedidos.script();
-      } else {
-        console.log("Ta bien");
+      if (!nick.checkValidity())
+        ;
+      else {
         tablaPedidos.script();
       }
     });
