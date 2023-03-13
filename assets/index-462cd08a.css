@@ -10031,3 +10031,6 @@ textarea.form-control-lg {
 * {
   padding: 3px;
 }
+.fila-oculta {
+  display: none;
+}
