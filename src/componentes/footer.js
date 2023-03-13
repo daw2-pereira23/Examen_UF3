@@ -1,6 +1,9 @@
 
 export const footer = {
     template:`
-   <h1>Soy el footer</h1> 
-    `
+   
+    `,
+    script:()=>{
+        console.log("Soy el footer");
+    }
 }

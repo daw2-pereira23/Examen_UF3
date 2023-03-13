@@ -5082,19 +5082,190 @@ enableDismissTrigger(Toast);
 defineJQueryPlugin(Toast);
 const home = {
   template: `
-   <h1>Soy la vista Home</h1> 
-    `
+    <div class="container">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-12 mt-5 shadow" id="pedidos">
+
+               </div>
+               <div class="col-12 mt-5 shadow" id="tablaPedidos">
+
+               </div>
+            </div>
+         </div>
+    </div> `
 };
 const header = {
   template: `
-   <h1>Esto es el header</h1> 
-    `
+    <p>Sergio Pereira Hidalgo</p>
+    <div class="col d-flex mt-5 justify-content-center">
+        <h1>Birras Y Tapas</h1>
+    </div>`,
+  script: () => {
+    console.log("Soy el header");
+  }
 };
 const footer = {
   template: `
-   <h1>Soy el footer</h1> 
-    `
+   
+    `,
+  script: () => {
+    console.log("Soy el footer");
+  }
+};
+const cervezas = [
+  {
+    id: 1,
+    nombre: "Mahou Cinco Estrellas",
+    tipo: "Lager",
+    origen: "Madrid",
+    descripcion: "Cerveza rubia, suave y refrescante con un sabor ligeramente amargo.",
+    imagen: "https://www.mahou.es/wp-content/themes/mahou_v2/template-contents/mahou-familia/dist/images/Botella_Mahou_5_Estrellas.png"
+  },
+  {
+    id: 2,
+    nombre: "Estrella Galicia",
+    tipo: "Lager",
+    origen: "Galicia",
+    descripcion: "Cerveza suave y equilibrada con un sabor ligeramente amargo y aroma a malta.",
+    imagen: "https://cdn.shopify.com/s/files/1/0271/8158/0388/products/estrella-galicia-escerveza-3.jpg?v=1648893181"
+  },
+  {
+    id: 3,
+    nombre: "Alhambra Reserva 1925",
+    tipo: "Lager",
+    origen: "Granada",
+    descripcion: "Cerveza rubia con un sabor ligeramente dulce y toques de caramelo.",
+    imagen: "https://sgfm.elcorteingles.es/SGFM/dctm/MEDIA03/202204/04/00118602800916____3__600x600.jpg"
+  },
+  {
+    id: 4,
+    nombre: "San Miguel Especial",
+    tipo: "Lager",
+    origen: "Barcelona",
+    descripcion: "Cerveza rubia, suave y refrescante con un sabor ligeramente amargo.",
+    imagen: "https://www.sanmiguel.com/es/wp-content/uploads/sites/2/2021/01/san-miguel-gluten-free-4.png"
+  },
+  {
+    id: 5,
+    nombre: "Damm Estrella",
+    tipo: "Lager",
+    origen: "Barcelona",
+    descripcion: "Cerveza rubia, suave y refrescante con un sabor ligeramente amargo.",
+    imagen: "https://static.damm.com/sites/default/files/config-page/estrella_header_logo/estrella-damm_0.png"
+  }
+];
+const pedidos = {
+  template: `
+
+      <div class="col-12 d-flex mt-2 shadow">
+         <div class="col-6">
+            <h2>Selecciona tu cerveaza y haz tu pedido</h2>
+            <form class="mt-5">
+               <div class="mt-2">
+                  <label class="form-label">Nombre del grupo</label>
+                  <input type="text" class="form-control">
+               </div>
+               <div class="mt-2">
+                  <label class="form-label">Mesa</label>
+                  <input type="number" class="form-control">
+               </div>
+               <div class="mt-2">
+                  <label class="form-label">Elige tu birra</label>
+                  <select id="eligeCerbeza" class="form-select" >
+                     
+                  </select>
+               </div>
+               <div class="mt-2">
+                  <label class="form-label">Cuantas te traigo</label>
+                  <input type="number" class="form-control" id="cantidad">
+               </div>
+            </form>
+            <button class="btn btn-success col-12 mt-3" id="enviar">Enviar Pedido</button>
+         </div>
+         <div class="col-6 mt-5" id="targeta">
+            
+      </div>
+
+    `,
+  script: () => {
+    var seleccionHtml = `
+        
+        `;
+    for (let index = 0; index < cervezas.length; index++) {
+      seleccionHtml += `
+           <option value="${cervezas[index].id}" class="seleccion"  data-id=${cervezas[index].id}>${cervezas[index].nombre}</option> 
+            `;
+    }
+    document.querySelector("#eligeCerbeza").innerHTML = seleccionHtml;
+  },
+  inyectarCerveza: () => {
+    document.querySelector("select").addEventListener("click", (event) => {
+      event.preventDefault();
+      var seleccion = document.querySelector("#eligeCerbeza");
+      var opcion = seleccion.options[seleccion.selectedIndex].value;
+      opcion = opcion - 1;
+      var card = `
+        <div class="card mt-5 col-12 col-6">
+               <div class="row g-0 mt-5">
+                 <div class="col-md-4">
+                   <img src="${cervezas[opcion].imagen}" class="img-fluid rounded-start" alt="...">
+                 </div>
+                 <div class="col-md-8">
+                   <div class="card-body">
+                     <h5 class="card-title">${cervezas[opcion].nombre}</h5>
+                     <p class="card-text">${cervezas[opcion].descripcion}</p>
+                    
+                   </div>
+                 </div>
+               </div>
+             </div>
+         </div>
+        `;
+      document.querySelector("#targeta").innerHTML = card;
+    });
+  }
+};
+const tablaPedidos = {
+  template: `
+        <h1>Esto es lo que has tomado ya:</h1>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Cerveza</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="tablaPedidos">
+                   <th id="nombre"></th>
+                   <th id="cantidadPoner"></th>
+                   <th><button class="btn btn-danger">Eliminar</button></th>
+                   <th><button class="btn btn-warning">Editar</button></th>
+                </tr>
+            </tbody>
+        </table>
+    `,
+  script: () => {
+    document.querySelector("#enviar").addEventListener("click", () => {
+      var cantidad = document.querySelector("#cantidad").value;
+      var seleccion = document.querySelector("#eligeCerbeza");
+      var opcion = seleccion.options[seleccion.selectedIndex].value;
+      var cantidad = document.querySelector("#cantidad").value;
+      var nombre = cervezas[opcion].nombre;
+      opcion = opcion - 1;
+      document.querySelector("#cantidadPoner").append(cantidad);
+      document.querySelector("#nombre").append(nombre);
+    });
+  }
 };
 document.querySelector("main").innerHTML = home.template;
 document.querySelector("header").innerHTML = header.template;
 document.querySelector("footer").innerHTML = footer.template;
+document.querySelector("#pedidos").innerHTML = pedidos.template;
+document.querySelector("#tablaPedidos").innerHTML = tablaPedidos.template;
+pedidos.script();
+pedidos.inyectarCerveza();
+tablaPedidos.script();

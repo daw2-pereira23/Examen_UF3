@@ -1,6 +1,11 @@
 
 export const header = {
     template: `
-   <h1>Esto es el header</h1> 
-    `
+    <p>Sergio Pereira Hidalgo</p>
+    <div class="col d-flex mt-5 justify-content-center">
+        <h1>Birras Y Tapas</h1>
+    </div>`,
+    script: ()=>{
+        console.log("Soy el header");
+    }
 }
